@@ -6,10 +6,11 @@ import morgan from 'morgan';
 import winston from 'winston';
 import apiRoutes from './routes/api.js';
 import authRoutes from './auth/authRoutes.js';
+import { config } from './config.js';
 
 // Initialize express app
 const app = express();
-const port = process.env.PORT || 5000;
+const port = config.port;
 
 // Configure logger
 const logger = winston.createLogger({
@@ -32,7 +33,10 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: config.corsOrigin,
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan('combined'));
 
@@ -48,14 +52,10 @@ app.get('/health', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   logger.error(err.stack);
-  res.status(500).json({
-    error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 // Start server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);
-  console.log(`Server is running on port ${port}`);
 }); 

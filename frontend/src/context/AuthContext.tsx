@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { config } from '../config';
 
 interface User {
   id: string;
@@ -31,7 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (username: string, password: string) => {
     try {
       setError(null);
-      const response = await axios.post('http://localhost:5000/auth/login', {
+      const response = await axios.post(`${config.apiUrl}/auth/login`, {
         username,
         password,
       });
@@ -47,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (username: string, password: string) => {
     try {
       setError(null);
-      const response = await axios.post('http://localhost:5000/auth/register', {
+      const response = await axios.post(`${config.apiUrl}/auth/register`, {
         username,
         password,
       });
