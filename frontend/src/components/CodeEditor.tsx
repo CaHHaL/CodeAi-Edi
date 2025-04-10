@@ -5,6 +5,7 @@ import { langs } from '@uiw/codemirror-extensions-langs';
 import axios from 'axios';
 import { PlayArrow, ContentCopy, Delete, BugReport, Code, Logout } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
+import { config } from '../config';
 
 const languages = [
   'javascript',
@@ -88,7 +89,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post('http://localhost:5000/api/debug', {
+      const response = await axios.post(`${config.apiUrl}/api/debug`, {
         code,
         language
       });
@@ -105,7 +106,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post('http://localhost:5000/api/generate', {
+      const response = await axios.post(`${config.apiUrl}/api/generate`, {
         description: code,
         language
       });
@@ -123,7 +124,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       setLoading(true);
       setError('');
       
-      const response = await axios.post('http://localhost:5000/api/execute', {
+      const response = await axios.post(`${config.apiUrl}/api/execute`, {
         code,
         language
       });
